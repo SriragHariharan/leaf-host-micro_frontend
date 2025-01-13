@@ -104,9 +104,18 @@ module.exports = {
         authMF: "authMF@http://localhost:8081/remoteEntry.js",
       },
       shared: {
-        react: { eager: true },
-        'react-dom': { eager: true },
-        // 'react-router-dom': { eager: true },
+        react: {
+          singleton: true,
+          requiredVersion: '^18.2.0',
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: '^18.2.0',
+        },
+        'react-router': {
+          singleton: true,
+          requiredVersion: '^7.1.1',
+        },
       },
     }),
     new rspack.DefinePlugin({
