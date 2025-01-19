@@ -99,10 +99,13 @@ module.exports = {
     new rspack.container.ModuleFederationPlugin({
       name: 'host',
       filename: 'remoteEntry.js',
-      exposes: {},
+      exposes: {
+        "./GlobalStore": "./src/helpers/globalStore.js"
+      },
       remotes: {
         authMF: "authMF@http://localhost:8081/remoteEntry.js",
-        profileMF: "profileMF@http://localhost:8082/remoteEntry.js"
+        profileMF: "profileMF@http://localhost:8082/remoteEntry.js",
+        hostApp: "host@http://localhost:8000/remoteEntry.js"
       },
       shared: {
         react: {

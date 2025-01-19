@@ -9,10 +9,10 @@ import {
 const navItems = [
   { icon: Home, label: 'Feed', to: '/', count: 0 },
   { icon: Users, label: 'Friends', to: '/friends', count: 3 },
-  { icon: Group, label: 'Groups', to: '/groups', count: 2 },
+  // { icon: Group, label: 'Groups', to: '/groups', count: 2 },
   { icon: MessageSquare, label: 'Messages', to: '/messages', count: 5 },
   { icon: Map, label: 'Postcards', to: '/postcards', count: 2 },
-  { icon: Sparkles, label: 'Travel AI', to: '/travel-ai', count: 0 },
+  // { icon: Sparkles, label: 'Travel AI', to: '/travel-ai', count: 0 },
   { icon: Bell, label: 'Notifications', to: '/notifications', count: 8 },
   { icon: Search, label: 'Search', to: '/search', count: 0 },
 ];
@@ -24,7 +24,7 @@ export default function Topbar() {
         <div className="flex items-center justify-between px-4 h-16">
           {/* Logo section */}
           <div className="flex items-center gap-2">
-            <Leaf className="h-8 w-8 text-green-600 hidden md:inline" />
+            <Leaf className="h-6 w-6 md:h-8 md:w-8 text-green-600 inline" />
             <span className="text-xl font-semibold text-green-600 hidden md:inline">Leaf</span>
           </div>
           
