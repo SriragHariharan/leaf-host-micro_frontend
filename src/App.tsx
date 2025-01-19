@@ -8,26 +8,22 @@ import Signup from './modfed-components/Signup';
 import ValidateEmail from './modfed-components/ValidateEmail';
 import ValidateOTP from './modfed-components/ValidateOtp';
 import ResetPassword from './modfed-components/ResetPassword';
-import useStore from './helpers/globalStore';
+//import useStore from './helpers/globalStore';
 import ProtectedRoute from './layouts/ProtectedRoute';
 
 const ProfilePage = lazy(() => import('profileMF/ProfilePage'));
+import useStore from "hostApp/GlobalStore";
 
 // AuthRoute Component
 const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { accessToken, refreshToken } = useStore();
   const isAuthenticated = accessToken || refreshToken;
-
+  
   // If the user is authenticated, redirect to the home page
   return isAuthenticated ? <Navigate to="/" replace /> : <>{children}</>;
 };
 
 const App = () => {
-  const store = useStore();
-
-  setInterval(() => {
-    console.log(store, 'store');
-  }, 3000);
 
   return (
     <div>

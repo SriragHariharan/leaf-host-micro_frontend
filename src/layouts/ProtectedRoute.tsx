@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router';
-import useStore from '../helpers/globalStore';
+import useStore from "hostApp/GlobalStore";
 
 
 

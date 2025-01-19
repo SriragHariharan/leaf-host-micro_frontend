@@ -2,8 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router';
 import { 
   Home, Users, MessageSquare, Map, 
-  Bell, Search, Leaf, Group,
-  Sparkles
+  Bell, Search, Leaf,
 } from 'lucide-react';
 
 const navItems = [
