@@ -5,10 +5,8 @@ import Topbar from '../components/Topbar';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="">
+    <div className="min-h-screen bg-gray-100">
         <Topbar />
-      </div>
       <div className="flex">
         {/* <div className="hidden md:block w-64 fixed h-screen">
           <Sidebar />
@@ -17,6 +15,6 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
-    </div>
+      </div>
   );
 }

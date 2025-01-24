@@ -67,7 +67,7 @@ const App = () => {
                 path="/profile"
                 element={
                   <Suspense fallback={<div>Loading...</div>}>
-                    <ProfilePage />
+                    <ProfilePage self={true} />
                   </Suspense>
                 }
               />
