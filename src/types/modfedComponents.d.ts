@@ -33,6 +33,15 @@ declare module 'profileMF/ProfilePage' {
   export default ProfilePage;
 }
 
+declare module 'profileMF/FriendsPage' {
+  export default ProfilePage;
+}
+
+declare module 'profileMF/FeedsPage' {
+  export default FeedsPage;
+}
+
+
 // types.d.ts
 declare module 'hostApp/GlobalStore' {
   // Define the type of the store's state (adjust according to your actual state shape)

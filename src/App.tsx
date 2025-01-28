@@ -13,6 +13,8 @@ import ProtectedRoute from './layouts/ProtectedRoute';
 
 const ProfilePage = lazy(() => import('profileMF/ProfilePage'));
 import useStore from "hostApp/GlobalStore";
+import FriendPage from './modfed-components/FriendPage';
+import FeedPage from './modfed-components/FeedPage';
 
 // AuthRoute Component
 const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -54,8 +56,8 @@ const App = () => {
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Layout />}>
-              <Route index element={<div className="text-6xl text-center">Feeds page</div>} />
-              <Route path="/friends" element={<div className="text-6xl text-center">Friends page</div>} />
+              <Route index element={<FeedPage />} />
+              <Route path="/friends" element={ <FriendPage /> } />
               <Route path="/groups" element={<div className="text-6xl text-center">Groups page</div>} />
               <Route path="/messages" element={<div className="text-6xl text-center">Messages page</div>} />
               <Route path="/postcards" element={<div className="text-6xl text-center">Postcards page</div>} />
