@@ -5,7 +5,7 @@ function FriendPage() {
   return (
     <div>
         <Suspense fallback={<div>Loading...</div>}>
-            <div className=" flex justify-center items-start">
+            <div className="flex justify-center items-start">
                 <FriendsPage />
             </div>
         </Suspense>

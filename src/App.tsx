@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
 import './index.scss';
@@ -11,10 +11,10 @@ import ResetPassword from './modfed-components/ResetPassword';
 //import useStore from './helpers/globalStore';
 import ProtectedRoute from './layouts/ProtectedRoute';
 
-const ProfilePage = lazy(() => import('profileMF/ProfilePage'));
 import useStore from "hostApp/GlobalStore";
 import FriendPage from './modfed-components/FriendPage';
 import FeedPage from './modfed-components/FeedPage';
+import ProfilePage from './modfed-components/ProfilePage';
 
 // AuthRoute Component
 const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -64,15 +64,9 @@ const App = () => {
               <Route path="/travel-ai" element={<div className="text-6xl text-center">AI page</div>} />
               <Route path="/notifications" element={<div className="text-6xl text-center">Notifications page</div>} />
               <Route path="/search" element={<div className="text-6xl text-center">Search page</div>} />
+              <Route path="/view-profile/:userID" element={<ProfilePage self={false} />} />
               {/* Profile page under Layout */}
-              <Route
-                path="/profile"
-                element={
-                  <Suspense fallback={<div>Loading...</div>}>
-                    <ProfilePage self={true} />
-                  </Suspense>
-                }
-              />
+              <Route path="/profile" element={<ProfilePage self={true} />} />
             </Route>
           </Route>
         </Routes>
