@@ -15,6 +15,7 @@ import useStore from "hostApp/GlobalStore";
 import FriendPage from './modfed-components/FriendPage';
 import FeedPage from './modfed-components/FeedPage';
 import ProfilePage from './modfed-components/ProfilePage';
+import SharedPostPage from './modfed-components/SharedPostPage';
 
 // AuthRoute Component
 const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -39,19 +40,26 @@ const App = () => {
           <Route
             path="/signup"
             element={ <AuthRoute> <Signup /> </AuthRoute> }
-          />
+            />
           <Route
             path="/confirm-email"
             element={ <AuthRoute> <ValidateEmail /> </AuthRoute> }
-          />
+            />
           <Route
             path="/confirm-otp"
             element={ <AuthRoute> <ValidateOTP /> </AuthRoute> }
-          />
+            />
           <Route
             path="/reset-password"
             element={ <AuthRoute> <ResetPassword /> </AuthRoute> }
+            />
+
+          {/* shared post route */}
+          <Route
+            path="/post"
+            element={ <SharedPostPage /> }
           />
+
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>

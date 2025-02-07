@@ -41,6 +41,9 @@ declare module 'profileMF/FeedsPage' {
   export default FeedsPage;
 }
 
+declare module 'profileMF/PostsPage' {
+  export default PostsPage;
+}
 
 // types.d.ts
 declare module 'hostApp/GlobalStore' {
