@@ -16,6 +16,7 @@ import FriendPage from './modfed-components/FriendPage';
 import FeedPage from './modfed-components/FeedPage';
 import ProfilePage from './modfed-components/ProfilePage';
 import SharedPostPage from './modfed-components/SharedPostPage';
+import SearchPostsPage from './modfed-components/SearchPostsPage';
 
 // AuthRoute Component
 const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -71,7 +72,7 @@ const App = () => {
               <Route path="/postcards" element={<div className="text-6xl text-center">Postcards page</div>} />
               <Route path="/travel-ai" element={<div className="text-6xl text-center">AI page</div>} />
               <Route path="/notifications" element={<div className="text-6xl text-center">Notifications page</div>} />
-              <Route path="/search" element={<div className="text-6xl text-center">Search page</div>} />
+              <Route path="/search" element={<SearchPostsPage />} />
               <Route path="/view-profile/:userID" element={<ProfilePage self={false} />} />
               {/* Profile page under Layout */}
               <Route path="/profile" element={<ProfilePage self={true} />} />

@@ -1,4 +1,3 @@
-console.log("Am loading or not ???")
 import React, { lazy, Suspense } from 'react';
 
 const PostsPage = lazy(() => import('profileMF/PostsPage'));
