@@ -45,6 +45,14 @@ declare module 'profileMF/PostsPage' {
   export default PostsPage;
 }
 
+declare module 'chatMF/Conversations' {
+  export default PostsPage;
+}
+
+declare module 'chatMF/Chat' {
+  export default PostsPage;
+}
+
 // types.d.ts
 declare module 'hostApp/GlobalStore' {
   // Define the type of the store's state (adjust according to your actual state shape)

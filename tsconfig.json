@@ -24,6 +24,6 @@
   },
   "include": [
     "src/**/*" // *** The files TypeScript should type check ***
-  ],
+, "../chat-mf/src/helpers/socket.js"  ],
   "exclude": ["node_modules", "build", "dist"]
 }

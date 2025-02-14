@@ -10,9 +10,9 @@ import useStore from "hostApp/GlobalStore";
 const navItems = [
   { icon: Home, label: 'Feed', to: '/', count: 0 },
   { icon: Users, label: 'Friends', to: '/friends', count: 3 },
-  // { icon: Group, label: 'Groups', to: '/groups', count: 2 },
   { icon: MessageSquare, label: 'Messages', to: '/messages', count: 5 },
-  { icon: Map, label: 'Postcards', to: '/postcards', count: 2 },
+  // { icon: Group, label: 'Groups', to: '/groups', count: 2 },
+  // { icon: Map, label: 'Postcards', to: '/postcards', count: 2 },
   // { icon: Sparkles, label: 'Travel AI', to: '/travel-ai', count: 0 },
   { icon: Bell, label: 'Notifications', to: '/notifications', count: 8 },
   { icon: Search, label: 'Search', to: '/search', count: 0 },
