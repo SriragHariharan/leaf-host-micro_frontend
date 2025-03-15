@@ -103,10 +103,18 @@ module.exports = {
         "./GlobalStore": "./src/helpers/globalStore.js"
       },
       remotes: {
-        authMF: "authMF@http://localhost:8081/remoteEntry.js",
-        profileMF: "profileMF@http://localhost:8082/remoteEntry.js",
-        hostApp: "host@http://localhost:8080/remoteEntry.js",
-        chatMF: "chatMF@http://localhost:8083/remoteEntry.js"
+        // // dev environment
+        // authMF: "authMF@http://localhost:8081/remoteEntry.js",
+        // profileMF: "profileMF@http://localhost:8082/remoteEntry.js",
+        // hostApp: "host@http://localhost:8080/remoteEntry.js",
+        // chatMF: "chatMF@http://localhost:8083/remoteEntry.js"        
+
+        // prod environment
+        authMF: "authMF@https://auth.leaf.monster/remoteEntry.js",
+        profileMF: "profileMF@https://profile.leaf.monster/remoteEntry.js",
+        hostApp: "host@https://www.leaf.monster/remoteEntry.js",
+        chatMF: "chatMF@https://chat.leaf.monster/remoteEntry.js"     
+
       },
       shared: {
         react: {
