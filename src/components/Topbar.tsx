@@ -3,10 +3,9 @@ import { Link, NavLink } from 'react-router'; // Make sure to use 'react-router-
 import { Home, Users, MessageSquare, Bell, Search, Leaf } from 'lucide-react';
 import useStore from "hostApp/GlobalStore";
 import io from 'socket.io-client';
-import { NOTIFICATION_SERVICE_URL } from '../constants/constants';
+// import { NOTIFICATION_SERVICE_URL } from '../constants/constants';
 import useNotificationStore from '../helpers/notificationCountStore';
 
-const notificationSocket = io(NOTIFICATION_SERVICE_URL, { transports: ['websocket'] });
 
 export default function Topbar() {
   const { username, profilePic, accessToken } = useStore();
@@ -19,7 +18,14 @@ export default function Topbar() {
     { icon: Search, label: 'Search', to: '/search', count: 0 },
     { icon: Bell, label: 'Notifications', to: '/notifications', count: notificationsCount },
   ];
-  
+
+  const NOTIFICATION_SERVICE_URL = "wss://api.leaf.monster";
+  const notificationSocket = io(NOTIFICATION_SERVICE_URL, {
+    path: "/notification/socket.io/", // Match the Ingress path
+    transports: ["websocket"],
+    auth: { token: accessToken },
+  });
+
   useEffect(() => {
     notificationSocket.on('connect', () => {
       console.log(`Connected to Notification Service at ${NOTIFICATION_SERVICE_URL}`);
