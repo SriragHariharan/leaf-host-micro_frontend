@@ -22,6 +22,10 @@ const useNotificationStore = create((set, get) => {
       set({ notificationsCount: 0 });
       localStorage.setItem('Leaf:notificationsCount', 0);
     },
+    setNotificationsCount: (count) => {
+      set({ notificationsCount: Number(count) });
+      localStorage.setItem('Leaf:notificationsCount', count);
+    },
     increaseFriendRequestsCount: () => {
       set((state) => ({ friendRequestsCount: parseInt(state.friendRequestsCount) + 1 }));
       const newState = get();

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router'; // Make sure to use 'react-router-dom' for React Router v6
 import { Home, Users, MessageSquare, Bell, Search, Leaf } from 'lucide-react';
 import useStore from "hostApp/GlobalStore";
+import useAxiosInstance from 'profileMF/useAxiosInstance';
 import io from 'socket.io-client';
 // import { NOTIFICATION_SERVICE_URL } from '../constants/constants';
 import useNotificationStore from '../helpers/notificationCountStore';
@@ -9,44 +10,60 @@ import useNotificationStore from '../helpers/notificationCountStore';
 
 export default function Topbar() {
   const { username, profilePic, accessToken } = useStore();
-  const { notificationsCount, friendRequestsCount, increaseNotificationsCount, increaseFriendRequestsCount } = useNotificationStore();
+  const { notificationsCount, friendRequestsCount, increaseNotificationsCount, setNotificationsCount } = useNotificationStore();
+
+  const axiosInstance = useAxiosInstance();
   
   const navItems = [
     { icon: Home, label: 'Feed', to: '/', count: 0 },
     { icon: Users, label: 'Friends', to: '/friends', count: friendRequestsCount },
-    { icon: MessageSquare, label: 'Messages', to: '/messages', count: 0 },
+    // { icon: MessageSquare, label: 'Messages', to: '/messages', count: 0 },
     { icon: Search, label: 'Search', to: '/search', count: 0 },
     { icon: Bell, label: 'Notifications', to: '/notifications', count: notificationsCount },
   ];
 
-  const NOTIFICATION_SERVICE_URL = "wss://api.leaf.monster";
-  const notificationSocket = io(NOTIFICATION_SERVICE_URL, {
-    path: "/notification/socket.io/", // Match the Ingress path
-    transports: ["websocket"],
-    auth: { token: accessToken },
-  });
+  /* connecting via notification socket */
+  /*
+    const NOTIFICATION_SERVICE_URL = "https://api.leaf.monster/socket.io";
+    const notificationSocket = io(NOTIFICATION_SERVICE_URL, { transports: ["websocket"] });
 
-  useEffect(() => {
-    notificationSocket.on('connect', () => {
-      console.log(`Connected to Notification Service at ${NOTIFICATION_SERVICE_URL}`);
-      notificationSocket.emit('authenticate', { token: accessToken });
 
-      // Listen for the 'friend_request_received' event
-      notificationSocket.on('friend_request_received', (_data) => {
-        increaseFriendRequestsCount();
-        increaseNotificationsCount();
+    useEffect(() => {
+      notificationSocket.on('connect', () => {
+        console.log(`Connected to Notification Service at ${NOTIFICATION_SERVICE_URL}`);
+        notificationSocket.emit('authenticate', { token: accessToken });
+
+        // Listen for the 'friend_request_received' event
+        notificationSocket.on('friend_request_received', (_data) => {
+          increaseFriendRequestsCount();
+          increaseNotificationsCount();
+        });
+
+        // Listen for post notification
+        notificationSocket.on('post_notification', (_data) => {
+          increaseNotificationsCount();
+        });
       });
 
-      // Listen for post notification
-      notificationSocket.on('post_notification', (_data) => {
-        increaseNotificationsCount();
-      });
-    });
+      return () => {
+        notificationSocket.disconnect();
+      };
+    }, [accessToken, increaseFriendRequestsCount, increaseNotificationsCount]);  
+  */
 
-    return () => {
-      notificationSocket.disconnect();
-    };
-  }, [accessToken, increaseFriendRequestsCount, increaseNotificationsCount]);
+    //get unread notifications count using api polling
+    //REASON: this is not the best way to do this, but it works for now also notifications is not that important compared to feeds
+    useEffect(() => {
+      const interval = setInterval(() => {
+        axiosInstance.get("../notification/count")
+        .then(resp => {
+          setNotificationsCount(resp?.data?.data?.count)
+        })
+        .catch(err => console.log(err));
+      }, 1500);
+
+      return () => clearInterval(interval);
+    }, [accessToken]);
 
   return (
     <div className="bg-white border-b border-gray-200 fixed w-full top-0 z-50 shadow-sm">
@@ -84,7 +101,7 @@ export default function Topbar() {
             }>
               <div className="relative">
                 <img
-                  src={profilePic || " https://leaf-user-profile-pics.s3.us-east-1.amazonaws.com/default-avatar.jpg"}
+                  src={profilePic ?? " https://leaf-user-profile-pics.s3.us-east-1.amazonaws.com/default-avatar.jpg"}
                   alt="Profile"
                   loading='lazy'
                   className="h-9 w-9 rounded-full object-cover border-2 border-white shadow-sm"
