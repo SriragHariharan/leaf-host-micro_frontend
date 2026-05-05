@@ -24,7 +24,7 @@ export default function Topbar() {
 
   /* connecting via notification socket */
   /*
-    const NOTIFICATION_SERVICE_URL = "https://api.leaf.monster/socket.io";
+    const NOTIFICATION_SERVICE_URL = process.env.VITE_NOTIFICATION_SERVICE_URL;
     const notificationSocket = io(NOTIFICATION_SERVICE_URL, { transports: ["websocket"] });
 
 
@@ -101,7 +101,7 @@ export default function Topbar() {
             }>
               <div className="relative">
                 <img
-                  src={profilePic ?? " https://leaf-user-profile-pics.s3.us-east-1.amazonaws.com/default-avatar.jpg"}
+                  src={profilePic ?? process.env.VITE_DEFAULT_PROFILE_IMAGE}
                   alt="Profile"
                   loading='lazy'
                   className="h-9 w-9 rounded-full object-cover border-2 border-white shadow-sm"

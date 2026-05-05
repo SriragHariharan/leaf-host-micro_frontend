@@ -19,7 +19,7 @@ const navItems = [
 
 export default function Sidebar() {
   const username = "John Doe"; // Replace with dynamic user data
-  const profilePicUrl = "https://via.placeholder.com/40"; // Replace with dynamic profile picture URL
+  const profilePicUrl = process.env.VITE_PLACEHOLDER_PROFILE_IMAGE; // Replace with dynamic profile picture URL
 
   return (
     <div className="h-full bg-white border-r border-gray-200 p-4 flex flex-col justify-between left-0 z-50">
