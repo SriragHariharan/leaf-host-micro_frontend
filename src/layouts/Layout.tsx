@@ -1,20 +1,16 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-// import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-gray-100">
-        <Topbar />
-      <div className="flex">
-        {/* <div className="hidden md:block w-64 fixed h-screen">
-          <Sidebar />
-        </div> */}
-        <main className="flex-1 mt-16">
+    <div className="min-h-screen bg-slate-100/80">
+      <Topbar />
+      <main className="min-h-screen px-2 pt-20 sm:px-4 md:px-6 md:pt-24 lg:px-8">
+        <div className="mx-auto w-full max-w-[1280px]">
           <Outlet />
-        </main>
-      </div>
-      </div>
+        </div>
+      </main>
+    </div>
   );
 }
