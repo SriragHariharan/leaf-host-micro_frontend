@@ -4,10 +4,10 @@ import Topbar from '../components/Topbar';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-slate-100/80">
+    <div className="min-h-screen bg-ds-surface-page">
       <Topbar />
-      <main className="min-h-screen px-2 pt-20 sm:px-4 md:px-6 md:pt-24 lg:px-8">
-        <div className="mx-auto w-full max-w-[1280px]">
+      <main className="min-h-screen px-ds-sm pt-20 sm:px-panel md:px-panel-lg md:pt-24 lg:px-section">
+        <div className="mx-auto w-full max-w-dsContainer">
           <Outlet />
         </div>
       </main>

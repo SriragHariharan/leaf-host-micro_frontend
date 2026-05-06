@@ -9,7 +9,7 @@ function AuthLayout({ children }: {children: ReactNode}) {
           <ImageCarousel />
         </Suspense>
       </div>
-      <div className="w-full lg:w-1/2 h-full bg-white">
+      <div className="w-full lg:w-1/2 h-full bg-ds-surface-card">
         <Suspense fallback={<h1>Loading...</h1>}>
           {children}
         </Suspense>

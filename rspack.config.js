@@ -101,7 +101,11 @@ module.exports = {
       name: 'host',
       filename: 'remoteEntry.js',
       exposes: {
-        "./GlobalStore": "./src/helpers/globalStore.js"
+        "./GlobalStore": "./src/helpers/globalStore.js",
+        "./designTokens": "./src/design-system/designTokens.ts",
+        "./designRecipes": "./src/design-system/designRecipes.ts",
+        "./themeBootstrap": "./src/design-system/themeBootstrap.ts",
+        "./tailwindTheme": "./src/design-system/tailwindTheme.js"
       },
       remotes: {
         authMF: `authMF@${process.env.VITE_AUTH_MF_REMOTE}`,

@@ -5,6 +5,7 @@ import useStore from "hostApp/GlobalStore";
 import useAxiosInstance from 'profileMF/useAxiosInstance';
 // import { NOTIFICATION_SERVICE_URL } from '../constants/constants';
 import useNotificationStore from '../helpers/notificationCountStore';
+import { designRecipes } from '../design-system';
 
 
 export default function Topbar() {
@@ -55,7 +56,7 @@ export default function Topbar() {
     useEffect(() => {
       const interval = setInterval(() => {
         axiosInstance.get("../notification/count")
-        .then((resp: { data?: { data?: { count?: number } } }) => {
+        .then((resp: any) => {
           setNotificationsCount(resp?.data?.data?.count ?? 0)
         })
         .catch((err: unknown) => console.log(err));
@@ -65,15 +66,15 @@ export default function Topbar() {
     }, [accessToken]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto max-w-[1320px] px-3 py-2.5 md:px-5">
-        <div className="flex h-14 items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/90 px-2.5 shadow-[0_8px_24px_rgba(15,23,42,0.06)] md:h-16 md:px-3.5">
+    <header className="fixed inset-x-0 top-0 z-dsOverlay">
+      <div className="mx-auto max-w-dsContainerWide px-ds-sm py-ds-sm md:px-panel">
+        <div className={`${designRecipes.topbarShell} flex min-h-dsTopbar items-center justify-between gap-ds-sm px-ds-sm md:min-h-dsTopbarMd md:px-control-x`}>
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 rounded-xl px-2 py-1 transition-all duration-200 hover:bg-emerald-50/80"
+            className="inline-flex items-center gap-1.5 rounded-dsMd px-ds-sm py-1 transition-all duration-ds hover:bg-ds-brand-50"
           >
-            <Leaf className="h-5 w-5 text-emerald-600 md:h-5.5 md:w-5.5" />
-            <span className="text-sm font-semibold tracking-tight text-emerald-700 md:text-base">Leaf</span>
+            <Leaf className="h-5 w-5 text-ds-brand-600" />
+            <span className="text-sm font-semibold tracking-tight text-ds-brand-700 md:text-base">Leaf</span>
           </Link>
           <nav className="flex items-center gap-1.5 md:gap-2">
             {navItems.map((item) => (
@@ -81,18 +82,17 @@ export default function Topbar() {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `relative inline-flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-xl border px-2 transition-all duration-200 md:h-10 md:px-3
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50
+                  `${designRecipes.navItemBase} h-9 min-w-9 md:h-10
                   ${isActive
-                    ? 'border-emerald-200 bg-emerald-50/90 text-emerald-700 shadow-[0_6px_14px_rgba(16,185,129,0.2)]'
-                    : 'border-transparent text-slate-600 hover:-translate-y-0.5 hover:border-slate-200 hover:bg-white hover:text-slate-900 hover:shadow-sm'
+                    ? designRecipes.navItemActive
+                    : designRecipes.navItemIdle
                   }`
                 }
               >
                 <item.icon className="h-[18px] w-[18px]" />
                 <span className="max-md:hidden text-xs font-medium">{item.label}</span>
                 {item.count > 0 && (
-                  <span className="absolute -right-1 -top-1 inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full border border-white bg-rose-500 px-1 text-[10px] font-semibold leading-none text-white shadow-sm">
+                  <span className={`${designRecipes.badgeDanger} absolute -right-1 -top-1 h-[18px] min-w-[18px]`}>
                     {item.count}
                   </span>
                 )}
@@ -103,11 +103,11 @@ export default function Topbar() {
             <NavLink
               to="/profile"
               className={({ isActive }) =>
-                `inline-flex items-center gap-2 rounded-xl border p-1 transition-all duration-200 md:gap-2.5 md:px-1.5
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50
+                `inline-flex items-center gap-2 rounded-dsMd border p-1 transition-all duration-ds md:gap-2.5 md:px-1.5
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ds-brand-500/50
                 ${isActive
-                  ? 'border-emerald-200 bg-emerald-50/90 shadow-[0_6px_14px_rgba(16,185,129,0.18)]'
-                  : 'border-transparent hover:border-slate-200 hover:bg-white hover:shadow-sm'
+                  ? 'border-ds-brand-200 bg-ds-brand-50 shadow-dsBrand'
+                  : 'border-transparent hover:border-ds-border-subtle hover:bg-ds-surface-card hover:shadow-dsSm'
                 }`
               }
             >
@@ -116,11 +116,11 @@ export default function Topbar() {
                   src={profilePic ?? process.env.VITE_DEFAULT_PROFILE_IMAGE}
                   alt="Profile"
                   loading='lazy'
-                  className="h-7 w-7 rounded-full border border-white object-cover shadow-sm md:h-8 md:w-8"
+                  className="h-7 w-7 rounded-full border border-ds-surface-card object-cover shadow-dsSm md:h-8 md:w-8"
                 />
-                <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-white bg-emerald-500"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-ds-surface-card bg-ds-state-success"></div>
               </div>
-              <span className="max-sm:hidden max-w-28 truncate text-xs font-semibold text-slate-700">{username}</span>
+              <span className="max-sm:hidden max-w-28 truncate text-xs font-semibold text-ds-text-secondary">{username}</span>
             </NavLink>
           </div>
         </div>

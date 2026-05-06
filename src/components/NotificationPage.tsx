@@ -4,6 +4,7 @@ import {
   ImagePlusIcon, AlertCircle, Loader2 
 } from 'lucide-react';
 import useAxiosInstance from 'profileMF/useAxiosInstance';
+import { designRecipes } from '../design-system';
 
 // Define the type of a notification
 interface Notification {
@@ -56,11 +57,11 @@ const NotificationsPage = () => {
   // Get the corresponding icon for each notification type
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case 'like': return <Heart className="w-8 h-8 text-red-500" />;
-      case 'comment': return <MessageSquare className="w-8 h-8 text-blue-500" />;
-      case 'follow': return <UserPlus className="w-8 h-8 text-green-500" />;
-      case 'post': return <ImagePlusIcon className="w-8 h-8 text-pink-500" />;
-      default: return <BellIcon className="w-8 h-8 text-black" />;
+      case 'like': return <Heart className="w-8 h-8 text-ds-state-danger" />;
+      case 'comment': return <MessageSquare className="w-8 h-8 text-ds-state-info" />;
+      case 'follow': return <UserPlus className="w-8 h-8 text-ds-state-success" />;
+      case 'post': return <ImagePlusIcon className="w-8 h-8 text-ds-brand-600" />;
+      default: return <BellIcon className="w-8 h-8 text-ds-text-primary" />;
     }
   };
 
@@ -68,7 +69,7 @@ const NotificationsPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-ds-brand-600" />
       </div>
     );
   }
@@ -77,12 +78,12 @@ const NotificationsPage = () => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
-        <h2 className="text-xl font-semibold text-gray-800 mb-2">Error Loading Notifications</h2>
-        <p className="text-gray-600 mb-4 text-center">{error}</p>
+        <AlertCircle className="w-12 h-12 text-ds-state-danger mb-4" />
+        <h2 className="text-xl font-semibold text-ds-text-primary mb-2">Error Loading Notifications</h2>
+        <p className="text-ds-text-secondary mb-4 text-center">{error}</p>
         <button 
           onClick={fetchNotifications}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className={`${designRecipes.buttonPrimary} px-4 py-2`}
         >
           Retry
         </button>
@@ -93,18 +94,18 @@ const NotificationsPage = () => {
   return (
     <div className="p-6 min-h-screen max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Notifications</h2>
+        <h2 className="text-2xl font-bold text-ds-text-primary">Notifications</h2>
         <div className="space-x-4">
           <button
             onClick={markAllAsRead}
-            className="px-4 py-2 text-green-600 hover:bg-green-50 rounded-lg flex items-center"
+            className={`${designRecipes.statusSuccess} px-4 py-2 hover:bg-ds-state-successSoft rounded-dsMd flex items-center`}
           >
             <Check className="w-5 h-5 mr-2" />
             Mark all as read
           </button>
           <button
             onClick={deleteAllNotifications}
-            className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center"
+            className={`${designRecipes.statusDanger} px-4 py-2 hover:bg-ds-state-dangerSoft rounded-dsMd flex items-center`}
           >
             <Trash2 className="w-5 h-5 mr-2" />
             Delete all
@@ -117,7 +118,7 @@ const NotificationsPage = () => {
           <div
             key={notification.id}
             className={`p-4 rounded-lg shadow ${
-              notification.isRead ? 'bg-white' : 'bg-gray-200'
+              notification.isRead ? 'bg-ds-surface-card' : 'bg-ds-surface-muted'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -126,8 +127,8 @@ const NotificationsPage = () => {
                   {getNotificationIcon(notification.type)}
                 </div>
                 <div>
-                  <p className="text-gray-800">{notification.content}</p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-ds-text-primary">{notification.content}</p>
+                  <p className="text-sm text-ds-text-muted">
                     {new Date(notification?.createdAt).toLocaleString()}
                   </p>
                 </div>

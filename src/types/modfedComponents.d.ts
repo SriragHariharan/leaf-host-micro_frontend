@@ -45,6 +45,13 @@ declare module 'profileMF/PostsPage' {
   export default PostsPage;
 }
 
+declare module "profileMF/useAxiosInstance" {
+  const useAxiosInstance: () => {
+    get: (url: string) => Promise<unknown>;
+  };
+  export default useAxiosInstance;
+}
+
 declare module 'chatMF/Conversations' {
   export default PostsPage;
 }
