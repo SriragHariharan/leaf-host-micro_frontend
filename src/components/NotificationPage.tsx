@@ -1,89 +1,319 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Trash2, Check, Heart, MessageSquare, UserPlus, BellIcon, 
-  ImagePlusIcon, AlertCircle, Loader2 
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import {
+  AlertCircle,
+  Bell,
+  CheckCheck,
+  Heart,
+  MessageCircle,
+  Trash2,
+  UserPlus,
+  ImageIcon,
 } from 'lucide-react';
 import useAxiosInstance from 'profileMF/useAxiosInstance';
 import { designRecipes } from '../design-system';
+import useNotificationStore from '../helpers/notificationCountStore';
+import type {
+  ApiResponse,
+  NotificationItem,
+  NotificationType,
+  NotificationsListData,
+  UnreadCountData,
+} from '../types/notification';
+import { getApiErrorMessage } from '../types/notification';
 
-// Define the type of a notification
-interface Notification {
-  id: number;
-  type: string;
-  content: string;
-  timestamp: number;
-  isRead: boolean;
+const DEFAULT_AVATAR =
+  'https://ui-avatars.com/api/?background=0d9488&color=fff&name=';
+
+function isToday(date: Date): boolean {
+  const now = new Date();
+  return (
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate()
+  );
+}
+
+function groupNotifications(notifications: NotificationItem[]) {
+  const today: NotificationItem[] = [];
+  const earlier: NotificationItem[] = [];
+
+  for (const n of notifications) {
+    const d = new Date(n.createdAt);
+    if (isToday(d)) {
+      today.push(n);
+    } else {
+      earlier.push(n);
+    }
+  }
+
+  return { today, earlier };
+}
+
+function getPostId(notification: NotificationItem): string | undefined {
+  return notification.postId ?? notification.entityId;
+}
+
+function getNavigationPath(notification: NotificationItem): string {
+  if (notification.type === 'friend_request') {
+    return '/friends';
+  }
+  const postId = getPostId(notification);
+  if (postId && ['like', 'comment', 'post'].includes(notification.type)) {
+    return `/post?postID=${encodeURIComponent(postId)}`;
+  }
+  return `/view-profile/${notification.interactedBy}`;
+}
+
+function NotificationSkeleton() {
+  return (
+    <div className="animate-pulse flex items-center gap-4 rounded-dsLg border border-ds-border-subtle bg-ds-surface-card p-4">
+      <div className="h-12 w-12 shrink-0 rounded-full bg-ds-surface-muted" />
+      <div className="flex-1 space-y-2">
+        <div className="h-4 w-3/4 rounded bg-ds-surface-muted" />
+        <div className="h-3 w-1/3 rounded bg-ds-surface-muted" />
+      </div>
+    </div>
+  );
+}
+
+function TypeBadge({ type }: { type: NotificationType }) {
+  const base =
+    'absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-ds-surface-card';
+
+  switch (type) {
+    case 'like':
+      return (
+        <span className={`${base} bg-ds-state-dangerSoft`}>
+          <Heart className="h-3 w-3 fill-ds-state-danger text-ds-state-danger" />
+        </span>
+      );
+    case 'comment':
+      return (
+        <span className={`${base} bg-ds-state-info/15`}>
+          <MessageCircle className="h-3 w-3 text-ds-state-info" />
+        </span>
+      );
+    case 'friend_request':
+    case 'friend_accept':
+      return (
+        <span className={`${base} bg-ds-state-successSoft`}>
+          <UserPlus className="h-3 w-3 text-ds-state-success" />
+        </span>
+      );
+    case 'post':
+      return (
+        <span className={`${base} bg-ds-brand-50`}>
+          <ImageIcon className="h-3 w-3 text-ds-brand-600" />
+        </span>
+      );
+    default:
+      return (
+        <span className={`${base} bg-ds-surface-muted`}>
+          <Bell className="h-3 w-3 text-ds-text-muted" />
+        </span>
+      );
+  }
+}
+
+function NotificationRow({
+  notification,
+  onClick,
+}: {
+  notification: NotificationItem;
+  onClick: (n: NotificationItem) => void;
+}) {
+  const actorName = notification.actor?.username ?? 'Someone';
+  const avatarSrc =
+    notification.actor?.profilePic ||
+    `${DEFAULT_AVATAR}${encodeURIComponent(actorName)}`;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onClick(notification)}
+      className={`group relative flex w-full items-start gap-4 rounded-dsLg border p-4 text-left transition-all duration-ds hover:shadow-dsMd focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ds-brand-500/40 ${
+        notification.isRead
+          ? 'border-ds-border-subtle bg-ds-surface-card hover:bg-ds-surface-muted/50'
+          : 'border-ds-brand-100 bg-ds-brand-50/40 hover:bg-ds-brand-50/70'
+      }`}
+    >
+      {!notification.isRead && (
+        <span className="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-ds-brand-500" />
+      )}
+
+      <div className="relative shrink-0">
+        <img
+          src={avatarSrc}
+          alt=""
+          className="h-12 w-12 rounded-full object-cover ring-2 ring-ds-surface-card"
+        />
+        <TypeBadge type={notification.type} />
+      </div>
+
+      <div className="min-w-0 flex-1 pt-0.5">
+        <p
+          className={`text-sm leading-snug ${
+            notification.isRead ? 'text-ds-text-secondary' : 'font-medium text-ds-text-primary'
+          }`}
+        >
+          {notification.content}
+        </p>
+        <p className="mt-1 text-xs text-ds-text-muted">
+          {new Date(notification.createdAt).toLocaleString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+          })}
+        </p>
+      </div>
+
+      {!notification.isRead && (
+        <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-ds-brand-500" aria-hidden />
+      )}
+    </button>
+  );
+}
+
+function NotificationSection({
+  title,
+  items,
+  onItemClick,
+}: {
+  title: string;
+  items: NotificationItem[];
+  onItemClick: (n: NotificationItem) => void;
+}) {
+  if (items.length === 0) return null;
+
+  return (
+    <section className="space-y-3">
+      <h3 className="px-1 text-xs font-semibold uppercase tracking-wider text-ds-text-muted">
+        {title}
+      </h3>
+      <div className="space-y-2">
+        {items.map((n) => (
+          <NotificationRow key={n.id} notification={n} onClick={onItemClick} />
+        ))}
+      </div>
+    </section>
+  );
 }
 
 const NotificationsPage = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const axiosInstance = useAxiosInstance();
+  const navigate = useNavigate();
+  const { setNotificationsCount } = useNotificationStore();
 
-  // Fetch notifications
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
+  const syncUnreadCount = useCallback(() => {
+    axiosInstance
+      .get<ApiResponse<UnreadCountData>>('../notification/count')
+      .then((resp) => {
+        setNotificationsCount(resp.data.data?.count ?? 0);
+      })
+      .catch(() => {});
+  }, [axiosInstance, setNotificationsCount]);
 
-  const fetchNotifications = () => {
+  const fetchNotifications = useCallback(() => {
     setLoading(true);
     setError(null);
 
-    axiosInstance.get('../notification')
-      .then(resp => setNotifications(resp?.data?.data?.notifications || []))
-      .catch(err => setError(err?.response?.data?.message || "Failed to load notifications"))
-      .finally(() => setLoading(false));
-  };
-
-  // Mark all notifications as read
-  const markAllAsRead = () => {
-    axiosInstance.put('../notification')
-      .then(() => {
-        setNotifications(prev =>
-          prev.map(notification => ({ ...notification, isRead: true }))
-        );
+    axiosInstance
+      .get<ApiResponse<NotificationsListData>>('../notification')
+      .then((resp) => {
+        setNotifications(resp.data.data?.notifications ?? []);
+        syncUnreadCount();
       })
-      .catch(err => setError(err?.response?.data?.message || "Failed to mark as read"));
+      .catch((err: unknown) =>
+        setError(getApiErrorMessage(err, 'Failed to load notifications')),
+      )
+      .finally(() => setLoading(false));
+  }, [axiosInstance, syncUnreadCount]);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  const unreadCount = useMemo(
+    () => notifications.filter((n) => !n.isRead).length,
+    [notifications],
+  );
+
+  const grouped = useMemo(() => groupNotifications(notifications), [notifications]);
+
+  const markAllAsRead = () => {
+    setActionLoading(true);
+    axiosInstance
+      .put('../notification')
+      .then(() => {
+        setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+        setNotificationsCount(0);
+      })
+      .catch((err: unknown) => setError(getApiErrorMessage(err, 'Failed to mark as read')))
+      .finally(() => setActionLoading(false));
   };
 
-  // Delete all notifications
   const deleteAllNotifications = () => {
-    axiosInstance.delete('../notification')
-      .then(() => setNotifications([]))
-      .catch(err => setError(err?.response?.data?.message || "Failed to delete notifications"));
+    setActionLoading(true);
+    axiosInstance
+      .delete('../notification')
+      .then(() => {
+        setNotifications([]);
+        setNotificationsCount(0);
+      })
+      .catch((err: unknown) =>
+        setError(getApiErrorMessage(err, 'Failed to delete notifications')),
+      )
+      .finally(() => setActionLoading(false));
   };
 
-  // Get the corresponding icon for each notification type
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case 'like': return <Heart className="w-8 h-8 text-ds-state-danger" />;
-      case 'comment': return <MessageSquare className="w-8 h-8 text-ds-state-info" />;
-      case 'follow': return <UserPlus className="w-8 h-8 text-ds-state-success" />;
-      case 'post': return <ImagePlusIcon className="w-8 h-8 text-ds-brand-600" />;
-      default: return <BellIcon className="w-8 h-8 text-ds-text-primary" />;
+  const handleNotificationClick = (notification: NotificationItem) => {
+    const path = getNavigationPath(notification);
+
+    if (!notification.isRead) {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)),
+      );
+      setNotificationsCount(Math.max(0, unreadCount - 1));
+
+      axiosInstance
+        .patch(`../notification/${notification.id}/read`)
+        .catch(() => {});
     }
+
+    navigate(path);
   };
 
-  // Show loading state
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-ds-brand-600" />
+      <div className="mx-auto min-h-[calc(100vh-5rem)] w-full max-w-2xl px-4 py-6 md:px-6">
+        <div className="mb-6 h-8 w-48 animate-pulse rounded bg-ds-surface-muted" />
+        <div className="space-y-3">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <NotificationSkeleton key={i} />
+          ))}
+        </div>
       </div>
     );
   }
 
-  // Show error state
-  if (error) {
+  if (error && notifications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <AlertCircle className="w-12 h-12 text-ds-state-danger mb-4" />
-        <h2 className="text-xl font-semibold text-ds-text-primary mb-2">Error Loading Notifications</h2>
-        <p className="text-ds-text-secondary mb-4 text-center">{error}</p>
-        <button 
+      <div className="flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center px-4">
+        <AlertCircle className="mb-4 h-12 w-12 text-ds-state-danger" />
+        <h2 className="mb-2 text-xl font-semibold text-ds-text-primary">
+          Error loading notifications
+        </h2>
+        <p className="mb-6 max-w-md text-center text-ds-text-secondary">{error}</p>
+        <button
+          type="button"
           onClick={fetchNotifications}
-          className={`${designRecipes.buttonPrimary} px-4 py-2`}
+          className={`${designRecipes.buttonPrimary} px-5 py-2.5`}
         >
           Retry
         </button>
@@ -92,51 +322,66 @@ const NotificationsPage = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-ds-text-primary">Notifications</h2>
-        <div className="space-x-4">
-          <button
-            onClick={markAllAsRead}
-            className={`${designRecipes.statusSuccess} px-4 py-2 hover:bg-ds-state-successSoft rounded-dsMd flex items-center`}
-          >
-            <Check className="w-5 h-5 mr-2" />
-            Mark all as read
-          </button>
-          <button
-            onClick={deleteAllNotifications}
-            className={`${designRecipes.statusDanger} px-4 py-2 hover:bg-ds-state-dangerSoft rounded-dsMd flex items-center`}
-          >
-            <Trash2 className="w-5 h-5 mr-2" />
-            Delete all
-          </button>
+    <div className="mx-auto min-h-[calc(100vh-5rem)] w-full max-w-2xl px-4 pb-12 pt-4 md:px-6 md:pt-6">
+      <header className="sticky top-dsTopbar z-10 -mx-4 mb-6 border-b border-ds-border-subtle bg-ds-surface-page/95 px-4 pb-4 backdrop-blur-md md:-mx-6 md:px-6">
+        <div className="flex items-center justify-end gap-2">
+            <button
+              type="button"
+              onClick={markAllAsRead}
+              disabled={actionLoading || unreadCount === 0}
+              className={`${designRecipes.buttonSecondary} inline-flex items-center gap-2 px-3 py-2 text-sm disabled:opacity-50`}
+            >
+              <CheckCheck className="h-4 w-4" />
+              Mark all read
+            </button>
+            <button
+              type="button"
+              onClick={deleteAllNotifications}
+              disabled={actionLoading || notifications.length === 0}
+              className="inline-flex items-center gap-2 rounded-dsMd border border-ds-border-subtle px-3 py-2 text-sm font-medium text-ds-state-danger transition-colors hover:bg-ds-state-dangerSoft disabled:opacity-50"
+            >
+              <Trash2 className="h-4 w-4" />
+              Clear all
+            </button>
         </div>
-      </div>
+        {error && (
+          <p className="mt-3 text-sm text-ds-state-danger" role="alert">
+            {error}
+          </p>
+        )}
+      </header>
 
-      <div className="space-y-4">
-        {notifications.map((notification) => (
-          <div
-            key={notification.id}
-            className={`p-4 rounded-lg shadow ${
-              notification.isRead ? 'bg-ds-surface-card' : 'bg-ds-surface-muted'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center">
-                  {getNotificationIcon(notification.type)}
-                </div>
-                <div>
-                  <p className="text-ds-text-primary">{notification.content}</p>
-                  <p className="text-sm text-ds-text-muted">
-                    {new Date(notification?.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            </div>
+      {notifications.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-dsXl border border-dashed border-ds-border-subtle bg-ds-surface-card px-6 py-16 text-center">
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-ds-surface-muted">
+            <Bell className="h-8 w-8 text-ds-text-muted" />
           </div>
-        ))}
-      </div>
+          <h2 className="text-lg font-semibold text-ds-text-primary">You&apos;re all caught up</h2>
+          <p className="mt-2 max-w-sm text-sm text-ds-text-secondary">
+            When someone likes your post, comments, or sends a friend request, you&apos;ll see it
+            here.
+          </p>
+          <Link
+            to="/"
+            className={`${designRecipes.buttonPrimary} mt-6 inline-flex px-5 py-2.5 text-sm`}
+          >
+            Go to feed
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          <NotificationSection
+            title="Today"
+            items={grouped.today}
+            onItemClick={handleNotificationClick}
+          />
+          <NotificationSection
+            title="Earlier"
+            items={grouped.earlier}
+            onItemClick={handleNotificationClick}
+          />
+        </div>
+      )}
     </div>
   );
 };

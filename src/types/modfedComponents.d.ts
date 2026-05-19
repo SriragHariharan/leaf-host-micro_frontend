@@ -51,9 +51,19 @@ declare module 'profileMF/SearchPage' {
 }
 
 declare module "profileMF/useAxiosInstance" {
-  const useAxiosInstance: () => {
-    get: (url: string) => Promise<unknown>;
-  };
+  interface AxiosLikeResponse<T = unknown> {
+    data: T;
+  }
+
+  interface AxiosLikeInstance {
+    get<T = unknown>(url: string): Promise<AxiosLikeResponse<T>>;
+    post<T = unknown>(url: string, data?: unknown): Promise<AxiosLikeResponse<T>>;
+    put<T = unknown>(url: string, data?: unknown): Promise<AxiosLikeResponse<T>>;
+    patch<T = unknown>(url: string, data?: unknown): Promise<AxiosLikeResponse<T>>;
+    delete<T = unknown>(url: string): Promise<AxiosLikeResponse<T>>;
+  }
+
+  const useAxiosInstance: () => AxiosLikeInstance;
   export default useAxiosInstance;
 }
 
