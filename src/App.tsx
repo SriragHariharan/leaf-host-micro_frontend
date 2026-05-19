@@ -16,7 +16,7 @@ import FriendPage from './modfed-components/FriendPage';
 import FeedPage from './modfed-components/FeedPage';
 import ProfilePage from './modfed-components/ProfilePage';
 import SharedPostPage from './modfed-components/SharedPostPage';
-import SearchPostsPage from './modfed-components/SearchPostsPage';
+import SearchPage from './modfed-components/SearchPage';
 import ChatPage from './modfed-components/ChatPage';
 import ConversationsPage from './modfed-components/ConversationsPage';
 import NotificationsPage from './components/NotificationPage';
@@ -73,7 +73,7 @@ const App = () => {
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/messages" element={<ConversationsPage />} />
               <Route path="/notifications" element={<NotificationsPage/>} />
-              <Route path="/search" element={<SearchPostsPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/view-profile/:userID" element={<ProfilePage self={false} />} />
               {/* Profile page under Layout */}
               <Route path="/profile" element={<ProfilePage self={true} />} />

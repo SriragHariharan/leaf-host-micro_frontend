@@ -45,6 +45,11 @@ declare module 'profileMF/PostsPage' {
   export default PostsPage;
 }
 
+declare module 'profileMF/SearchPage' {
+  const SearchPage: React.ComponentType;
+  export default SearchPage;
+}
+
 declare module "profileMF/useAxiosInstance" {
   const useAxiosInstance: () => {
     get: (url: string) => Promise<unknown>;

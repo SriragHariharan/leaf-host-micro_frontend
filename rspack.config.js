@@ -6,6 +6,8 @@ require('dotenv').config();
 
 const printCompilationMessage = require('./compilation.config.js');
 
+const port = 8080;
+
 /**
  * @type {import('@rspack/cli').Configuration}
  */
@@ -14,10 +16,16 @@ module.exports = {
   entry: {
     main: './src/index.ts',
   },
+
+  output: {
+    publicPath: '/',
+  },
   
   devServer: {
-    port: 8080,
-    historyApiFallback: true,
+    port,
+    historyApiFallback: {
+      index: '/index.html',
+    },
     watchFiles: [path.resolve(__dirname, 'src')],
     onListening: function (devServer) {
       const port = devServer.server.address().port

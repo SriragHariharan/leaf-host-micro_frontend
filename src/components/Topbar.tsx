@@ -53,17 +53,17 @@ export default function Topbar() {
 
     //get unread notifications count using api polling
     //REASON: this is not the best way to do this, but it works for now also notifications is not that important compared to feeds
-    useEffect(() => {
-      const interval = setInterval(() => {
-        axiosInstance.get("../notification/count")
-        .then((resp: any) => {
-          setNotificationsCount(resp?.data?.data?.count ?? 0)
-        })
-        .catch((err: unknown) => console.log(err));
-      }, 1500);
+    // useEffect(() => {
+    //   const interval = setInterval(() => {
+    //     axiosInstance.get("../notification/count")
+    //     .then((resp: any) => {
+    //       setNotificationsCount(resp?.data?.data?.count ?? 0)
+    //     })
+    //     .catch((err: unknown) => console.log(err));
+    //   }, 1500);
 
-      return () => clearInterval(interval);
-    }, [accessToken]);
+    //   return () => clearInterval(interval);
+    // }, [accessToken]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-dsOverlay">
