@@ -1,69 +1,21 @@
-import React, { useEffect } from 'react';
-import { Link, NavLink } from 'react-router'; // Make sure to use 'react-router-dom' for React Router v6
+import React from 'react';
+import { Link, NavLink } from 'react-router';
 import { Home, Users, Bell, Search, Leaf } from 'lucide-react';
 import useStore from "hostApp/GlobalStore";
-import useAxiosInstance from 'hostApp/useAxiosInstance';
-// import { NOTIFICATION_SERVICE_URL } from '../constants/constants';
 import useNotificationStore from '../helpers/notificationCountStore';
 import { designRecipes } from '../design-system';
 
 
 export default function Topbar() {
-  const { username, profilePic, accessToken } = useStore();
-  const { notificationsCount, friendRequestsCount, setNotificationsCount } = useNotificationStore();
+  const { username, profilePic } = useStore();
+  const { notificationsCount, friendRequestsCount } = useNotificationStore();
 
-  const axiosInstance = useAxiosInstance();
-  
   const navItems = [
     { icon: Home, label: 'Feed', to: '/', count: 0 },
     { icon: Users, label: 'Friends', to: '/friends', count: friendRequestsCount },
-    // { icon: MessageSquare, label: 'Messages', to: '/messages', count: 0 },
     { icon: Search, label: 'Search', to: '/search', count: 0 },
     { icon: Bell, label: 'Notifications', to: '/notifications', count: notificationsCount },
   ];
-
-  /* connecting via notification socket */
-  /*
-    const NOTIFICATION_SERVICE_URL = process.env.REACT_APP_NOTIFICATION_SERVICE_URL;
-    const notificationSocket = io(NOTIFICATION_SERVICE_URL, { transports: ["websocket"] });
-
-
-    useEffect(() => {
-      notificationSocket.on('connect', () => {
-        console.log(`Connected to Notification Service at ${NOTIFICATION_SERVICE_URL}`);
-        notificationSocket.emit('authenticate', { token: accessToken });
-
-        // Listen for the 'friend_request_received' event
-        notificationSocket.on('friend_request_received', (_data) => {
-          increaseFriendRequestsCount();
-          increaseNotificationsCount();
-        });
-
-        // Listen for post notification
-        notificationSocket.on('post_notification', (_data) => {
-          increaseNotificationsCount();
-        });
-      });
-
-      return () => {
-        notificationSocket.disconnect();
-      };
-    }, [accessToken, increaseFriendRequestsCount, increaseNotificationsCount]);  
-  */
-
-    //get unread notifications count using api polling
-    //REASON: this is not the best way to do this, but it works for now also notifications is not that important compared to feeds
-    // useEffect(() => {
-    //   const interval = setInterval(() => {
-    //     axiosInstance.get("../notification/count")
-    //     .then((resp: any) => {
-    //       setNotificationsCount(resp?.data?.data?.count ?? 0)
-    //     })
-    //     .catch((err: unknown) => console.log(err));
-    //   }, 1500);
-
-    //   return () => clearInterval(interval);
-    // }, [accessToken]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-dsOverlay">
