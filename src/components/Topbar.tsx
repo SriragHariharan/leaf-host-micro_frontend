@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router'; // Make sure to use 'react-router-dom' for React Router v6
 import { Home, Users, Bell, Search, Leaf } from 'lucide-react';
 import useStore from "hostApp/GlobalStore";
-import useAxiosInstance from 'profileMF/useAxiosInstance';
+import useAxiosInstance from 'hostApp/useAxiosInstance';
 // import { NOTIFICATION_SERVICE_URL } from '../constants/constants';
 import useNotificationStore from '../helpers/notificationCountStore';
 import { designRecipes } from '../design-system';

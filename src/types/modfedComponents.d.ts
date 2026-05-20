@@ -50,29 +50,36 @@ declare module 'profileMF/SearchPage' {
   export default SearchPage;
 }
 
-declare module "profileMF/useAxiosInstance" {
+declare module 'hostApp/toast' {
+  import type { ComponentType } from 'react';
+
+  export const Toaster: ComponentType;
+  export const toastOptions: { position: 'bottom-right'; duration: number };
+  export const showErrorToast: (message: string) => void;
+  export const showSuccessToast: (message: string) => void;
+}
+
+declare module "hostApp/useAxiosInstance" {
+  interface AxiosRequestConfig {
+    params?: Record<string, unknown>;
+    signal?: AbortSignal;
+    headers?: Record<string, string>;
+  }
+
   interface AxiosLikeResponse<T = unknown> {
     data: T;
   }
 
   interface AxiosLikeInstance {
-    get<T = unknown>(url: string): Promise<AxiosLikeResponse<T>>;
-    post<T = unknown>(url: string, data?: unknown): Promise<AxiosLikeResponse<T>>;
-    put<T = unknown>(url: string, data?: unknown): Promise<AxiosLikeResponse<T>>;
-    patch<T = unknown>(url: string, data?: unknown): Promise<AxiosLikeResponse<T>>;
-    delete<T = unknown>(url: string): Promise<AxiosLikeResponse<T>>;
+    get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<AxiosLikeResponse<T>>;
+    post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<AxiosLikeResponse<T>>;
+    put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<AxiosLikeResponse<T>>;
+    patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<AxiosLikeResponse<T>>;
+    delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<AxiosLikeResponse<T>>;
   }
 
   const useAxiosInstance: () => AxiosLikeInstance;
   export default useAxiosInstance;
-}
-
-declare module 'chatMF/Conversations' {
-  export default PostsPage;
-}
-
-declare module 'chatMF/Chat' {
-  export default PostsPage;
 }
 
 // types.d.ts

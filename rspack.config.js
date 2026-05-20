@@ -110,16 +110,17 @@ module.exports = {
       filename: 'remoteEntry.js',
       exposes: {
         "./GlobalStore": "./src/helpers/globalStore.js",
+        "./useAxiosInstance": "./src/helpers/axiosInstance.js",
         "./designTokens": "./src/design-system/designTokens.ts",
         "./designRecipes": "./src/design-system/designRecipes.ts",
         "./themeBootstrap": "./src/design-system/themeBootstrap.ts",
-        "./tailwindTheme": "./src/design-system/tailwindTheme.js"
+        "./tailwindTheme": "./src/design-system/tailwindTheme.js",
+        "./toast": "./src/helpers/toast.ts"
       },
       remotes: {
         authMF: `authMF@${process.env.VITE_AUTH_MF_REMOTE}`,
         profileMF: `profileMF@${process.env.VITE_PROFILE_MF_REMOTE}`,
-        hostApp: `host@${process.env.VITE_HOST_REMOTE}`,
-        chatMF: `chatMF@${process.env.VITE_CHAT_MF_REMOTE}`
+        hostApp: `host@${process.env.VITE_HOST_REMOTE}`
       },
       shared: {
         react: {
@@ -134,6 +135,10 @@ module.exports = {
           singleton: true,
           requiredVersion: '^7.1.1',
         },
+        'react-hot-toast': {
+          singleton: true,
+          requiredVersion: '^2.5.2',
+        },
       },
     }),
     new rspack.DefinePlugin({
@@ -141,10 +146,11 @@ module.exports = {
       'process.env.VITE_DEFAULT_PROFILE_IMAGE': JSON.stringify(process.env.VITE_DEFAULT_PROFILE_IMAGE),
       'process.env.VITE_PLACEHOLDER_PROFILE_IMAGE': JSON.stringify(process.env.VITE_PLACEHOLDER_PROFILE_IMAGE),
       'process.env.VITE_NOTIFICATION_SERVICE_URL': JSON.stringify(process.env.VITE_NOTIFICATION_SERVICE_URL),
+      'process.env.VITE_LEAF_USER_BASE_URL': JSON.stringify(process.env.VITE_LEAF_USER_BASE_URL),
+      'process.env.VITE_LEAF_PROFILE_REFRESH_TOKEN_URL': JSON.stringify(process.env.VITE_LEAF_PROFILE_REFRESH_TOKEN_URL),
       'process.env.VITE_HOST_REMOTE': JSON.stringify(process.env.VITE_HOST_REMOTE),
       'process.env.VITE_AUTH_MF_REMOTE': JSON.stringify(process.env.VITE_AUTH_MF_REMOTE),
       'process.env.VITE_PROFILE_MF_REMOTE': JSON.stringify(process.env.VITE_PROFILE_MF_REMOTE),
-      'process.env.VITE_CHAT_MF_REMOTE': JSON.stringify(process.env.VITE_CHAT_MF_REMOTE),
     }),
     new rspack.ProgressPlugin({}),
     new rspack.HtmlRspackPlugin({

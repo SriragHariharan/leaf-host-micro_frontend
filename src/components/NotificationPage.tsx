@@ -10,7 +10,7 @@ import {
   UserPlus,
   ImageIcon,
 } from 'lucide-react';
-import useAxiosInstance from 'profileMF/useAxiosInstance';
+import useAxiosInstance from 'hostApp/useAxiosInstance';
 import { designRecipes } from '../design-system';
 import useNotificationStore from '../helpers/notificationCountStore';
 import type {

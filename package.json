@@ -25,11 +25,15 @@
     "tailwindcss": "^3.4.1"
   },
   "dependencies": {
+    "axios": "^1.7.9",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "jwt-decode": "^4.0.0",
     "dotenv": "^17.4.2",
     "lucide-react": "^0.471.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.5.2",
     "react-router": "^7.1.1",
     "socket.io-client": "^4.8.1",
     "zustand": "^5.0.3"

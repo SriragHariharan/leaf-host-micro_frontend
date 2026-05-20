@@ -17,9 +17,8 @@ import FeedPage from './modfed-components/FeedPage';
 import ProfilePage from './modfed-components/ProfilePage';
 import SharedPostPage from './modfed-components/SharedPostPage';
 import SearchPage from './modfed-components/SearchPage';
-import ChatPage from './modfed-components/ChatPage';
-import ConversationsPage from './modfed-components/ConversationsPage';
 import NotificationsPage from './components/NotificationPage';
+import { Toaster, toastOptions } from './helpers/toast';
 
 // AuthRoute Component
 const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -34,6 +33,7 @@ const App = () => {
 
   return (
     <div>
+      <Toaster position={toastOptions.position} toastOptions={{ duration: toastOptions.duration }} />
       <Router>
         <Routes>
           {/* Public routes */}
@@ -70,8 +70,6 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<FeedPage />} />
               <Route path="/friends" element={ <FriendPage /> } />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/messages" element={<ConversationsPage />} />
               <Route path="/notifications" element={<NotificationsPage/>} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/view-profile/:userID" element={<ProfilePage self={false} />} />
