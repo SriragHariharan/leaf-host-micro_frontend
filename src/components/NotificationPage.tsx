@@ -11,6 +11,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import useAxiosInstance from 'hostApp/useAxiosInstance';
+import { NOTIFICATION_PATHS } from '../constants/constants';
 import { designRecipes } from '../design-system';
 import useNotificationStore from '../helpers/notificationCountStore';
 import type {
@@ -212,7 +213,7 @@ const NotificationsPage = () => {
 
   const syncUnreadCount = useCallback(() => {
     axiosInstance
-      .get<ApiResponse<UnreadCountData>>('../notification/count')
+      .get<ApiResponse<UnreadCountData>>(NOTIFICATION_PATHS.count)
       .then((resp) => {
         setNotificationsCount(resp.data.data?.count ?? 0);
       })
@@ -224,7 +225,7 @@ const NotificationsPage = () => {
     setError(null);
 
     axiosInstance
-      .get<ApiResponse<NotificationsListData>>('../notification')
+      .get<ApiResponse<NotificationsListData>>(NOTIFICATION_PATHS.list)
       .then((resp) => {
         setNotifications(resp.data.data?.notifications ?? []);
         syncUnreadCount();
@@ -249,7 +250,7 @@ const NotificationsPage = () => {
   const markAllAsRead = () => {
     setActionLoading(true);
     axiosInstance
-      .put('../notification')
+      .put(NOTIFICATION_PATHS.markAllRead)
       .then(() => {
         setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
         setNotificationsCount(0);
@@ -261,7 +262,7 @@ const NotificationsPage = () => {
   const deleteAllNotifications = () => {
     setActionLoading(true);
     axiosInstance
-      .delete('../notification')
+      .delete(NOTIFICATION_PATHS.clear)
       .then(() => {
         setNotifications([]);
         setNotificationsCount(0);
@@ -282,7 +283,7 @@ const NotificationsPage = () => {
       setNotificationsCount(Math.max(0, unreadCount - 1));
 
       axiosInstance
-        .patch(`../notification/${notification.id}/read`)
+        .patch(NOTIFICATION_PATHS.read(notification.id))
         .catch(() => {});
     }
 

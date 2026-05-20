@@ -4,8 +4,8 @@ import { useMemo, useRef } from 'react';
 import useStore from "hostApp/GlobalStore";
 import dayjs from 'dayjs';
 
-const LEAF_USER_BASE_URL = process.env.VITE_LEAF_USER_BASE_URL;
-const LEAF_PROFILE_REFRESH_TOKEN_URL = process.env.VITE_LEAF_PROFILE_REFRESH_TOKEN_URL;
+const LEAF_USER_BASE_URL = process.env.REACT_APP_LEAF_USER_BASE_URL;
+const LEAF_PROFILE_REFRESH_TOKEN_URL = process.env.REACT_APP_LEAF_PROFILE_REFRESH_TOKEN_URL;
 
 const isTokenExpired = (token) => {
     try {

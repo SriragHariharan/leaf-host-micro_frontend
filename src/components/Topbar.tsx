@@ -24,7 +24,7 @@ export default function Topbar() {
 
   /* connecting via notification socket */
   /*
-    const NOTIFICATION_SERVICE_URL = process.env.VITE_NOTIFICATION_SERVICE_URL;
+    const NOTIFICATION_SERVICE_URL = process.env.REACT_APP_NOTIFICATION_SERVICE_URL;
     const notificationSocket = io(NOTIFICATION_SERVICE_URL, { transports: ["websocket"] });
 
 
@@ -113,7 +113,7 @@ export default function Topbar() {
             >
               <div className="relative shrink-0">
                 <img
-                  src={profilePic ?? process.env.VITE_DEFAULT_PROFILE_IMAGE}
+                  src={profilePic ?? process.env.REACT_APP_DEFAULT_PROFILE_IMAGE}
                   alt="Profile"
                   loading='lazy'
                   className="h-7 w-7 rounded-full border border-ds-surface-card object-cover shadow-dsSm md:h-8 md:w-8"

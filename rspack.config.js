@@ -118,9 +118,9 @@ module.exports = {
         "./toast": "./src/helpers/toast.ts"
       },
       remotes: {
-        authMF: `authMF@${process.env.VITE_AUTH_MF_REMOTE}`,
-        profileMF: `profileMF@${process.env.VITE_PROFILE_MF_REMOTE}`,
-        hostApp: `host@${process.env.VITE_HOST_REMOTE}`
+        authMF: `authMF@${process.env.REACT_APP_AUTH_MF_REMOTE}`,
+        profileMF: `profileMF@${process.env.REACT_APP_PROFILE_MF_REMOTE}`,
+        hostApp: `host@${process.env.REACT_APP_HOST_REMOTE}`
       },
       shared: {
         react: {
@@ -143,14 +143,14 @@ module.exports = {
     }),
     new rspack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.VITE_DEFAULT_PROFILE_IMAGE': JSON.stringify(process.env.VITE_DEFAULT_PROFILE_IMAGE),
-      'process.env.VITE_PLACEHOLDER_PROFILE_IMAGE': JSON.stringify(process.env.VITE_PLACEHOLDER_PROFILE_IMAGE),
-      'process.env.VITE_NOTIFICATION_SERVICE_URL': JSON.stringify(process.env.VITE_NOTIFICATION_SERVICE_URL),
-      'process.env.VITE_LEAF_USER_BASE_URL': JSON.stringify(process.env.VITE_LEAF_USER_BASE_URL),
-      'process.env.VITE_LEAF_PROFILE_REFRESH_TOKEN_URL': JSON.stringify(process.env.VITE_LEAF_PROFILE_REFRESH_TOKEN_URL),
-      'process.env.VITE_HOST_REMOTE': JSON.stringify(process.env.VITE_HOST_REMOTE),
-      'process.env.VITE_AUTH_MF_REMOTE': JSON.stringify(process.env.VITE_AUTH_MF_REMOTE),
-      'process.env.VITE_PROFILE_MF_REMOTE': JSON.stringify(process.env.VITE_PROFILE_MF_REMOTE),
+      'process.env.REACT_APP_DEFAULT_PROFILE_IMAGE': JSON.stringify(process.env.REACT_APP_DEFAULT_PROFILE_IMAGE),
+      'process.env.REACT_APP_PLACEHOLDER_PROFILE_IMAGE': JSON.stringify(process.env.REACT_APP_PLACEHOLDER_PROFILE_IMAGE),
+      'process.env.REACT_APP_NOTIFICATION_SERVICE_URL': JSON.stringify(process.env.REACT_APP_NOTIFICATION_SERVICE_URL),
+      'process.env.REACT_APP_LEAF_USER_BASE_URL': JSON.stringify(process.env.REACT_APP_LEAF_USER_BASE_URL),
+      'process.env.REACT_APP_LEAF_PROFILE_REFRESH_TOKEN_URL': JSON.stringify(process.env.REACT_APP_LEAF_PROFILE_REFRESH_TOKEN_URL),
+      'process.env.REACT_APP_HOST_REMOTE': JSON.stringify(process.env.REACT_APP_HOST_REMOTE),
+      'process.env.REACT_APP_AUTH_MF_REMOTE': JSON.stringify(process.env.REACT_APP_AUTH_MF_REMOTE),
+      'process.env.REACT_APP_PROFILE_MF_REMOTE': JSON.stringify(process.env.REACT_APP_PROFILE_MF_REMOTE),
     }),
     new rspack.ProgressPlugin({}),
     new rspack.HtmlRspackPlugin({
