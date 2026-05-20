@@ -68,7 +68,7 @@ function getNavigationPath(notification: NotificationItem): string {
 
 function NotificationSkeleton() {
   return (
-    <div className="animate-pulse flex items-center gap-4 rounded-dsLg border border-ds-border-subtle bg-ds-surface-card p-4">
+    <div className={designRecipes.notificationSkeleton}>
       <div className="h-12 w-12 shrink-0 rounded-full bg-ds-surface-muted" />
       <div className="flex-1 space-y-2">
         <div className="h-4 w-3/4 rounded bg-ds-surface-muted" />
@@ -79,8 +79,7 @@ function NotificationSkeleton() {
 }
 
 function TypeBadge({ type }: { type: NotificationType }) {
-  const base =
-    'absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-ds-surface-card';
+  const base = designRecipes.notificationTypeBadge;
 
   switch (type) {
     case 'like':
@@ -133,21 +132,17 @@ function NotificationRow({
     <button
       type="button"
       onClick={() => onClick(notification)}
-      className={`group relative flex w-full items-start gap-4 rounded-dsLg border p-4 text-left transition-all duration-ds hover:shadow-dsMd focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ds-brand-500/40 ${
+      className={
         notification.isRead
-          ? 'border-ds-border-subtle bg-ds-surface-card hover:bg-ds-surface-muted/50'
-          : 'border-ds-brand-100 bg-ds-brand-50/40 hover:bg-ds-brand-50/70'
-      }`}
+          ? designRecipes.notificationRow
+          : designRecipes.notificationRowUnread
+      }
     >
-      {!notification.isRead && (
-        <span className="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-ds-brand-500" />
-      )}
-
       <div className="relative shrink-0">
         <img
           src={avatarSrc}
           alt=""
-          className="h-12 w-12 rounded-full object-cover ring-2 ring-ds-surface-card"
+          className={designRecipes.avatarNotification}
         />
         <TypeBadge type={notification.type} />
       </div>
@@ -324,7 +319,7 @@ const NotificationsPage = () => {
 
   return (
     <div className="mx-auto min-h-[calc(100vh-5rem)] w-full max-w-2xl px-4 pb-12 pt-4 md:px-6 md:pt-6">
-      <header className="sticky top-dsTopbar z-10 -mx-4 mb-6 border-b border-ds-border-subtle bg-ds-surface-page/95 px-4 pb-4 backdrop-blur-md md:-mx-6 md:px-6">
+      <header className={designRecipes.notificationStickyHeader}>
         <div className="flex items-center justify-end gap-2">
             <button
               type="button"
@@ -339,7 +334,7 @@ const NotificationsPage = () => {
               type="button"
               onClick={deleteAllNotifications}
               disabled={actionLoading || notifications.length === 0}
-              className="inline-flex items-center gap-2 rounded-dsMd border border-ds-border-subtle px-3 py-2 text-sm font-medium text-ds-state-danger transition-colors hover:bg-ds-state-dangerSoft disabled:opacity-50"
+              className={designRecipes.buttonDangerSecondary}
             >
               <Trash2 className="h-4 w-4" />
               Clear all
@@ -353,7 +348,7 @@ const NotificationsPage = () => {
       </header>
 
       {notifications.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-dsXl border border-dashed border-ds-border-subtle bg-ds-surface-card px-6 py-16 text-center">
+        <div className={designRecipes.emptyStateCard}>
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-ds-surface-muted">
             <Bell className="h-8 w-8 text-ds-text-muted" />
           </div>

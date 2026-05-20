@@ -1,15 +1,16 @@
 import React, { lazy, ReactNode, Suspense } from 'react';
+import { designRecipes } from '../design-system';
 const ImageCarousel = lazy(() => import('authMF/ImageCarousel'));
 
 function AuthLayout({ children }: {children: ReactNode}) {
   return (
-    <div className="h-screen w-screen flex">
-      <div className="hidden lg:block w-1/2 h-full">
+    <div className={designRecipes.authSplitLayout}>
+      <div className={designRecipes.authSplitCarouselCol}>
         <Suspense fallback={<h1>Loading...</h1>}>
           <ImageCarousel />
         </Suspense>
       </div>
-      <div className="w-full lg:w-1/2 h-full bg-ds-surface-card">
+      <div className={designRecipes.authSplitFormCol}>
         <Suspense fallback={<h1>Loading...</h1>}>
           {children}
         </Suspense>

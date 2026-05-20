@@ -1,13 +1,12 @@
 import React, { lazy, Suspense } from 'react'
+import { designRecipes } from '../design-system';
 const FriendsPage = lazy(() => import('profileMF/FriendsPage'));
 
 function FriendPage() {
   return (
-    <div>
+    <div className={designRecipes.pageCenter}>
         <Suspense fallback={<div>Loading...</div>}>
-            <div className="flex justify-center items-start">
                 <FriendsPage />
-            </div>
         </Suspense>
     </div>
   )

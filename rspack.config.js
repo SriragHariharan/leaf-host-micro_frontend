@@ -111,7 +111,6 @@ module.exports = {
       exposes: {
         "./GlobalStore": "./src/helpers/globalStore.js",
         "./useAxiosInstance": "./src/helpers/axiosInstance.js",
-        "./designTokens": "./src/design-system/designTokens.ts",
         "./designRecipes": "./src/design-system/designRecipes.ts",
         "./themeBootstrap": "./src/design-system/themeBootstrap.ts",
         "./tailwindTheme": "./src/design-system/tailwindTheme.js",
