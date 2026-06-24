@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react'
-import { designRecipes } from '../design-system';
+import { designRecipes } from '@srirag/leaf-design-system';
 const FriendsPage = lazy(() => import('profileMF/FriendsPage'));
 
 function FriendPage() {

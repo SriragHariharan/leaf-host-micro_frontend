@@ -1,5 +1,5 @@
 import React, { lazy, ReactNode, Suspense } from 'react';
-import { designRecipes } from '../design-system';
+import { designRecipes } from '@srirag/leaf-design-system';
 const ImageCarousel = lazy(() => import('authMF/ImageCarousel'));
 
 function AuthLayout({ children }: {children: ReactNode}) {

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./design-system/theme.css";
+@import "@srirag/leaf-design-system/theme.css";
 
 body {
   font-family: var(--ds-font-family-sans);

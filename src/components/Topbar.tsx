@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router';
 import { Home, Users, Bell, Search, Leaf } from 'lucide-react';
 import useStore from "hostApp/GlobalStore";
 import useNotificationStore from '../helpers/notificationCountStore';
-import { designRecipes } from '../design-system';
+import { designRecipes } from '@srirag/leaf-design-system';
 
 
 export default function Topbar() {

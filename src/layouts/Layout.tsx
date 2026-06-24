@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router';
 import Topbar from '../components/Topbar';
-import { designRecipes } from '../design-system';
+import { designRecipes } from '@srirag/leaf-design-system';
 
 export default function Layout() {
   return (

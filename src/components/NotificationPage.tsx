@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import useAxiosInstance from 'hostApp/useAxiosInstance';
 import { NOTIFICATION_PATHS } from '../constants/constants';
-import { designRecipes } from '../design-system';
+import { designRecipes } from '@srirag/leaf-design-system';
 import useNotificationStore from '../helpers/notificationCountStore';
 import type {
   ApiResponse,
